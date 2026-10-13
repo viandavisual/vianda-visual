@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CV · Josep Maria Solé · Vianda Visual</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="styles.css?v=1.0">
+<style>footer .wrap{text-align:center!important;justify-content:center!important;width:100%}</style></head>
+<body>
+<header><div class="wrap cvnav"><div class="cvbrand"><strong>VIANDA VISUAL</strong><span>CV</span></div>
+<div class="cvnavright"><div class="langswitch" role="group" aria-label="CV language"><button data-lang="eng">ENG</button><button data-lang="cast">CAST</button><button data-lang="cat">CAT</button></div><a href="../" class="portfolio-link" id="portfolioLink">PORTFOLIO ↗</a></div></div></header>
+<main id="cvroot"></main>
+<footer><div class="wrap">VIANDA VISUAL · Josep Maria Solé</div></footer>
+<script>window.VV_PUBLIC_BUILD=true;window.VV_PUBLIC_PREFIX="../";window.VV_PUBLISHED_ASSETS={"vv-image-disturbing-stories-app": "media/vv-image-disturbing-stories-app.png", "vv-image-project-1790260152347": "media/vv-image-project-1790260152347.png", "vv-image-project-1790260160814": "media/vv-image-project-1790260160814.png", "vv-item-disturbing-player": "media/vv-item-disturbing-player.png", "vv-image-banda-de-la-cala": "media/vv-image-banda-de-la-cala.png", "vv-image-project-1790260161949": "media/vv-image-project-1790260161949.png", "vv-item-project-1790276486719": "media/vv-item-project-1790276486719.png", "vv-item-project-1790276487764": "media/vv-item-project-1790276487764.png", "vv-image-lab-01": "media/vv-image-lab-01.jpg", "vv-bg-projects": "media/vv-bg-projects.png", "vv-bg-lab": "media/vv-bg-lab.png", "vv-site-bg-audiovisual": "media/vv-site-bg-audiovisual.jpg", "vv-site-bg-about": "media/vv-site-bg-about.jpg", "vv-bg-skills": "media/vv-bg-skills.jpg", "vv-bg-contact": "media/vv-bg-contact.jpg", "vv-site-bg-home": "media/vv-site-bg-home.jpg", "vv-item-cv-experience-1": "media/vv-item-cv-experience-1.png", "vv-item-cv-experience-2": "media/vv-item-cv-experience-2.png", "vv-item-cv-experience-3": "media/vv-item-cv-experience-3.jpg", "vv-item-cv-experience-4": "media/vv-item-cv-experience-4.jpg", "vv-item-cv-experience-5": "media/vv-item-cv-experience-5.jpg", "vv-item-cv-experience-6": "media/vv-item-cv-experience-6.jpg", "vv-item-cv-experience-7": "media/vv-item-cv-experience-7.jpg", "vv-item-cv-projects-1": "media/vv-item-cv-projects-1.png", "vv-item-cv-projects-2": "media/vv-item-cv-projects-2.png", "vv-item-cv-education-1": "media/vv-item-cv-education-1.png", "vv-item-cv-education-2": "media/vv-item-cv-education-2.png", "vv-item-cv-education-3": "media/vv-item-cv-education-3.jpg", "vv-cv-bg-hero": "media/vv-cv-bg-hero.jpg", "vv-cv-bg-experience": "media/vv-cv-bg-experience.png", "vv-cv-bg-projects": "media/vv-cv-bg-projects.png", "vv-cv-bg-education": "media/vv-cv-bg-education.png", "vv-cv-bg-languages": "media/vv-cv-bg-languages.png"};</script>
+<script src="../shared/app.js?v=1.0"></script>
+<script src="../shared/phone-analytics.js?v=1.0"></script>
+<script>
+
+function vvNormalizeModel(d){
+  d.backgrounds=d.backgrounds||{};
+  d.cv=d.cv||{};
+  d.cv.ui=d.cv.ui||{};
+  d.cv.backgrounds=d.cv.backgrounds||{};
+  d.cv.experience=d.cv.experience||[];
+  d.cv.projects=d.cv.projects||[];
+  d.cv.education=d.cv.education||[];
+  d.cv.languages=d.cv.languages||[];
+  d.cv.skills=d.cv.skills||{development:[],creative:[]};
+  d.cv.links=d.cv.links||{};
+  for(const sid of ['hero','experience','projects','skills','education','languages','links']){
+    d.cv.backgrounds[sid]=d.cv.backgrounds[sid]||{image:'',imageAssetId:'',overlay:.68,posX:50,posY:50};
+  }
+  for(const sid of ['home','projects','lab','audiovisual','about','skills','contact']){
+    d.backgrounds[sid]=d.backgrounds[sid]||{image:'',imageAssetId:'',overlay:.62,posX:50,posY:50};
+  }
+  for(const group of ['experience','projects','education','languages']){
+    (d.cv[group]||[]).forEach((item,i)=>{
+      item.id=item.id||`cv-${group}-${i+1}`;
+      if(item.image==null)item.image='';
+      if(item.imageAssetId==null)item.imageAssetId='';
+      if(item.imagePosX==null)item.imagePosX=50;
+      if(item.imagePosY==null)item.imagePosY=50;
+      if(item.video==null)item.video='';
+    });
+  }
+  return d;
+}
+
+(async()=>{
+ const d=vvNormalizeModel(await vvLoad()), c=d.cv;
+ let lang=vvPageLanguage();
+ await vvPrepareBackgrounds(c.backgrounds||{});
+ for(const group of ['experience','projects','education','languages']) await vvPrepareMedia(c[group]||[]);
+ const root=document.getElementById('cvroot');
+ function T(v){return vvText(v,lang)}
+ function itemMedia(x){
+   const media=vvMedia(x,lang,'');
+   const hasImage=!!(x._imageSrc||x.image);
+   const video=x.video?`<a class="video-link" href="${vvEsc(x.video)}" target="_blank" rel="noopener">${vvEsc(T(c.ui.view_video))}</a>`:'';
+   return hasImage?`<div class="cv-item-media">${media}${video}</div>`:(video?`<div class="cv-item-media empty-media">${video}</div>`:'');
+ }
+ function itemArticle(x,kind){
+   const period=x.period?`<div class="period">${vvEsc(x.period)}</div>`:'';
+   const level=x.level?`<p>${vvEsc(typeof x.level==='string'?x.level:T(x.level))}</p>`:'';
+   const body=x.body&&T(x.body)?`<p>${vvEsc(T(x.body))}</p>`:'';
+   const url=x.url?`<a class="inline-link" href="${vvEsc(x.url)}" target="_blank">${vvEsc(T(c.ui.view))}</a>`:'';
+   return `<article class="cv-item ${kind||''}">${itemMedia(x)}<div class="cv-item-copy">${period}<h3>${vvEsc(T(x.title||x.name))}</h3>${body}${level}${url}</div></article>`;
+ }
+ function section(id,bg,left,right){
+   return `<section id="${id}">${vvSectionBackground(bg)}<div class="wrap grid section-content"><div>${left}</div><div>${right}</div></div></section>`;
+ }
+ let hasRendered=false;
+ let phoneRevealed=false;
+ const phoneLabels={eng:"Show phone number",cast:"Mostrar número de teléfono",cat:"Mostra el número de telèfon"};
+ function render(){
+   document.documentElement.lang=lang==='eng'?'en':lang==='cast'?'es':'ca';
+   document.querySelectorAll('[data-lang]').forEach(b=>{const active=b.dataset.lang===lang;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
+   document.getElementById('portfolioLink').textContent=T(c.ui.portfolio);
+
+   root.innerHTML=
+   `<section class="hero">${vvSectionBackground(c.backgrounds?.hero)}<div class="wrap section-content">
+      <div class="cv-kicker">VIANDA VISUAL · ${vvEsc(T(c.ui.cv_label))}</div>
+      <h1>${vvEsc(c.profile.name)}</h1><div class="role">${vvEsc(T(c.profile.role))}</div>
+      <p class="summary">${vvEsc(T(c.profile.summary))}</p>
+      <div class="contactline contact-box"><span>${vvEsc(c.profile.location)}</span><span>${vvEsc(c.profile.email)}</span><button type="button" id="revealPhone" class="phone-reveal" aria-label="Show phone number" title="Show phone number"><svg class="vv-phone-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 18.81a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.09 4.18 2 2 0 0 1 4.08 2h3a2 2 0 0 1 2 1.72c.12.96.34 1.91.65 2.81a2 2 0 0 1-.45 2.11L8.01 9.91a16 16 0 0 0 6.08 6.08l1.27-1.27a2 2 0 0 1 2.11-.45c.9.31 1.85.53 2.81.65A2 2 0 0 1 22 16.92Z"/></svg></button></div>
+   </div></section>`+
+   section('experience',c.backgrounds?.experience,
+     `<div class="eyebrow">${vvEsc(T(c.ui.experience_eyebrow))}</div><h2>${vvEsc(T(c.ui.experience_title))}</h2>`,
+     `<div class="timeline">${c.experience.map(x=>itemArticle(x,'experience-item')).join('')}</div>`)+
+   section('projects',c.backgrounds?.projects,
+     `<div class="eyebrow">${vvEsc(T(c.ui.projects_eyebrow))}</div><h2>${vvEsc(T(c.ui.projects_title))}</h2>`,
+     `<div class="projectlist">${c.projects.map(x=>itemArticle(x,'project-item')).join('')}</div>`)+
+   section('skills',c.backgrounds?.skills,
+     `<div class="eyebrow">${vvEsc(T(c.ui.skills_eyebrow))}</div><h2>${vvEsc(T(c.ui.skills_title))}</h2>`,
+     `<div class="skills"><div><h3>${vvEsc(T(c.ui.development))}</h3><div class="pills">${c.skills.development.map(x=>`<span>${vvEsc(T(x))}</span>`).join('')}</div></div>
+      <div><h3>${vvEsc(T(c.ui.creative))}</h3><div class="pills">${c.skills.creative.map(x=>`<span>${vvEsc(T(x))}</span>`).join('')}</div></div></div>`)+
+   section('education',c.backgrounds?.education,
+     `<div class="eyebrow">${vvEsc(T(c.ui.education_eyebrow))}</div><h2>${vvEsc(T(c.ui.education_title))}</h2>`,
+     `<div class="simplelist">${c.education.map(x=>itemArticle(x,'education-item')).join('')}</div>`)+
+   section('languages',c.backgrounds?.languages,
+     `<div class="eyebrow">${vvEsc(T(c.ui.languages_eyebrow))}</div><h2>${vvEsc(T(c.ui.languages_title))}</h2>`,
+     `<div class="simplelist">${c.languages.map(x=>itemArticle(x,'language-item')).join('')}</div>`)+
+   section('links',c.backgrounds?.links,
+     `<div class="eyebrow">${vvEsc(T(c.ui.links_eyebrow))}</div><h2>${vvEsc(T(c.ui.links_title))}</h2>`,
+     `<div class="links"><a class="bottom-portfolio" href="../">${vvEsc(T(c.ui.portfolio))}</a>${Object.entries(c.links).filter(([k,v])=>k!=='portfolio'&&v).map(([k,v])=>`<a href="${vvEsc(v)}" target="_blank">${k.toUpperCase()} ↗</a>`).join('')}</div>`);
+   const reveal=document.getElementById('revealPhone');
+   if(reveal){
+     if(phoneRevealed){reveal.textContent=c.profile.phone||'';reveal.classList.add('revealed');reveal.setAttribute('aria-label',c.profile.phone||'');}
+     else {
+       reveal.setAttribute('aria-label',phoneLabels[lang]);reveal.title=phoneLabels[lang];
+       reveal.addEventListener('click',()=>{
+         if(phoneRevealed)return;
+         phoneRevealed=true;
+         reveal.textContent=c.profile.phone||'';
+         reveal.classList.add('revealed');
+         reveal.setAttribute('aria-label',c.profile.phone||'');
+         reveal.removeAttribute('title');
+         vvPhoneTrackReveal();
+       },{once:true});
+     }
+   }
+   if(!hasRendered){hasRendered=true;vvTypeText(document.body);}
+ }
+ document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{if(lang===b.dataset.lang)return;vvStopTyping();lang=b.dataset.lang;vvSetLang(lang);vvUpdateLanguageURL(lang);render()});
+ window.addEventListener('popstate',()=>{const next=vvPageLanguage();if(next!==lang){vvStopTyping();lang=next;render()}});
+ render();
+})();
+</script></body></html>
