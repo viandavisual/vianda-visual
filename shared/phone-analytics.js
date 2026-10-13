@@ -1,4 +1,4 @@
-/* v1.1: public phone-reveal analytics; requires Cloudflare Worker + D1 deployment. */
+/* v1.2: public phone-reveal analytics; requires Cloudflare Worker + D1 deployment. */
 'use strict';
 const VV_PHONE_STATS_ENDPOINT='https://cv.viandavisual.com/api/phone-reveal';
 async function vvPhoneTrackReveal(){

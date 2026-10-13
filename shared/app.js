@@ -187,10 +187,21 @@ async function vvPrepareBackgrounds(backgrounds={}){
   for(const bg of Object.values(backgrounds||{})){
     bg._imageSrc = bg.image || '';
     if(bg.imageAssetId){
-      try{
-        const blob=await vvAssetGet(bg.imageAssetId);
-        if(blob) bg._imageSrc=await vvBlobToDataURL(blob);
-      }catch(e){ console.error('Background resolve error', e); }
+      if(window.VV_PUBLIC_BUILD){
+        // Public sites cannot access the editor's private IndexedDB.
+        // Use the same published media manifest as project/CV images.
+        const media=window.VV_PUBLISHED_ASSETS||{};
+        if(media[bg.imageAssetId]){
+          bg._imageSrc=(window.VV_PUBLIC_PREFIX||'')+media[bg.imageAssetId];
+        }else{
+          console.error('Published background is missing from media manifest:',bg.imageAssetId);
+        }
+      }else{
+        try{
+          const blob=await vvAssetGet(bg.imageAssetId);
+          if(blob) bg._imageSrc=await vvBlobToDataURL(blob);
+        }catch(e){ console.error('Background resolve error',e); }
+      }
     }
   }
   return backgrounds;
