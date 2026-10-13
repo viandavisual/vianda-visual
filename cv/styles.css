@@ -60,3 +60,8 @@ section{position:relative;isolation:isolate;overflow:hidden}
 .phone-reveal:hover,.phone-reveal:focus-visible{border-color:var(--accent);outline-offset:3px}
 .phone-reveal.revealed{color:var(--ink);background:transparent;cursor:text;user-select:text}
 .vv-phone-icon{height:20px;width:20px;flex:none}
+
+/* v1.4 - PDF in header */
+.pdf-download{border:1px solid #d8ff34;background:rgba(216,255,52,.10);color:#d8ff34;border-radius:5px;padding:8px 11px;min-height:32px;font:900 10px Inter,Arial,sans-serif;letter-spacing:.06em;cursor:pointer;white-space:nowrap}
+.pdf-download:hover,.pdf-download:focus-visible{background:#d8ff34;color:#111;outline-offset:3px}
+@media(max-width:760px){.pdf-download{padding:8px 9px}.portfolio-link{margin-left:0}}
