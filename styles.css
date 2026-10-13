@@ -290,7 +290,7 @@ footer{padding:28px 0;color:var(--muted);font-size:12px}
 footer{text-align:center}
 footer>.wrap{text-align:center}
 
-/* v1.0 — official visual identity and language grouping */
+/* v1.1 — official visual identity and language grouping */
 .hero .section-content{display:flex;flex-direction:column;align-items:flex-start}
 .hero-identity{display:flex;align-items:center;justify-content:flex-start;width:100%;max-width:1050px;margin:12px 0 22px}
 .hero-logo{display:block;width:min(100%,1050px);height:auto;object-fit:contain}
@@ -307,6 +307,6 @@ footer>.wrap{text-align:center}
 @media(max-width:760px){.hero-identity{margin:10px 0 18px}.navright{gap:7px}.langswitch{padding:3px;gap:1px}.langswitch button{padding:6px 4px}}
 @media(prefers-reduced-motion:reduce){.card .cta::before{animation:none;display:none}.card .cta{transition:none}}
 
-/* v1.0: unmistakable selected locale, no animation */
+/* v1.1: unmistakable selected locale, no animation */
 .langswitch button.active,.langswitch button[aria-pressed="true"]{background:#d8ff34!important;color:#101318!important;border-radius:5px;font-weight:900;box-shadow:0 0 0 1px rgba(216,255,52,.35)}
 .langswitch button:focus-visible{outline:2px solid #d8ff34;outline-offset:3px}
