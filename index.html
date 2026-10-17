@@ -28,9 +28,9 @@
 <div id="sections"></div>
 </main>
 
-<footer><div class="wrap"><strong id="footbrand"></strong> · <span id="footertext"></span> · <span class="footer-version">v1.5</span></div></footer>
+<footer><div class="wrap"><strong id="footbrand"></strong> · <span id="footertext"></span> · <span class="footer-version">v1.3</span></div></footer>
 
-<script>window.VV_PUBLIC_BUILD=true;window.VV_PUBLIC_PREFIX="";window.VV_PUBLISHED_ASSETS={};</script>
+<script>window.VV_PUBLIC_BUILD=true;window.VV_PUBLIC_PREFIX="";window.VV_PUBLISHED_ASSETS={"vv-image-disturbing-stories-app": "media/vv-image-disturbing-stories-app.png", "vv-image-project-1790260152347": "media/vv-image-project-1790260152347.png", "vv-image-project-1790260160814": "media/vv-image-project-1790260160814.png", "vv-item-disturbing-player": "media/vv-item-disturbing-player.png", "vv-image-banda-de-la-cala": "media/vv-image-banda-de-la-cala.png", "vv-image-project-1790260161949": "media/vv-image-project-1790260161949.png", "vv-item-project-1790276486719": "media/vv-item-project-1790276486719.png", "vv-item-project-1790276487764": "media/vv-item-project-1790276487764.png", "vv-image-lab-01": "media/vv-image-lab-01.jpg", "vv-bg-projects": "media/vv-bg-projects.png", "vv-bg-lab": "media/vv-bg-lab.png", "vv-site-bg-audiovisual": "media/vv-site-bg-audiovisual.jpg", "vv-site-bg-about": "media/vv-site-bg-about.jpg", "vv-bg-skills": "media/vv-bg-skills.jpg", "vv-site-bg-contact": "media/vv-site-bg-contact.png", "vv-site-bg-home": "media/vv-site-bg-home.jpg", "vv-item-cv-experience-1": "media/vv-item-cv-experience-1.png", "vv-item-cv-experience-2": "media/vv-item-cv-experience-2.png", "vv-item-cv-experience-3": "media/vv-item-cv-experience-3.jpg", "vv-item-cv-experience-4": "media/vv-item-cv-experience-4.jpg", "vv-item-cv-experience-5": "media/vv-item-cv-experience-5.jpg", "vv-item-cv-experience-6": "media/vv-item-cv-experience-6.jpg", "vv-item-cv-experience-7": "media/vv-item-cv-experience-7.jpg", "vv-item-cv-projects-1": "media/vv-item-cv-projects-1.png", "vv-item-cv-projects-2": "media/vv-item-cv-projects-2.png", "vv-item-cv-education-1": "media/vv-item-cv-education-1.png", "vv-item-cv-education-2": "media/vv-item-cv-education-2.png", "vv-item-cv-education-3": "media/vv-item-cv-education-3.jpg", "vv-cv-bg-hero": "media/vv-cv-bg-hero.jpg", "vv-cv-bg-experience": "media/vv-cv-bg-experience.png", "vv-cv-bg-projects": "media/vv-cv-bg-projects.png", "vv-cv-bg-education": "media/vv-cv-bg-education.png", "vv-cv-bg-languages": "media/vv-cv-bg-languages.png"};</script>
 <script src="shared/app.js?v=1.1"></script>
 <script>
 
@@ -92,7 +92,6 @@ function vvNormalizeModel(d){
    document.getElementById('navlinks').innerHTML=sections.map(s=>`<a href="#${s.id}">${vvEsc(T(s.label))}</a>`).join('');
 
 
-   const openedProjects=new Set([...document.querySelectorAll('.vv-project-card.is-open')].map(el=>el.dataset.projectId));
    const mediaLabel=T(d.ui.media);
    const target=document.getElementById('sections');
    target.innerHTML='';
@@ -101,11 +100,11 @@ function vvNormalizeModel(d){
     projects:()=>`<section id="projects">${vvSectionBackground(d.backgrounds?.projects)}<div class="wrap section-content">
       <div class="section-head"><div><div class="eyebrow">${vvEsc(T(d.ui.selected_work))}</div><h2>${vvEsc(T(d.ui.projects_title))}</h2></div></div>
       <div class="projects-grid">
-      ${d.projects.filter(x=>x.visible).sort((a,b)=>a.order-b.order).map(p=>`<article class="card vv-project-card" data-project-id="${vvEsc(String(p.id))}" data-initial-open="${openedProjects.has(String(p.id))?'1':'0'}"><button class="vv-project-toggle" type="button" aria-expanded="false" aria-label="${vvEsc(T(p.title))}" title="${vvEsc(T(p.title))}">${vvMedia(p,lang,mediaLabel)}</button><div class="vv-project-reveal"><div class="vv-project-reveal-inner">${vvVideoEmbed(p.video)}
+      ${d.projects.filter(x=>x.visible).sort((a,b)=>a.order-b.order).map(p=>`<article class="card">${vvMedia(p,lang,mediaLabel)}${vvVideoEmbed(p.video)}
         <div class="card-body"><h3>${vvEsc(T(p.title))}</h3><div class="sub">${vvEsc(T(p.subtitle))}</div>
         <div class="tags">${vvEsc(T(p.tags))}</div><p>${vvEsc(T(p.description))}</p>
         ${p.url?`<a class="cta" href="${vvEsc(p.url)}" target="_blank" rel="noopener">${vvEsc(T(d.ui.view_project))}</a>`:''}
-        </div></div></div></article>`).join('')}</div></div></section>`,
+        </div></article>`).join('')}</div></div></section>`,
     lab:()=>`<section id="lab">${vvSectionBackground(d.backgrounds?.lab)}<div class="wrap section-content">
       <div class="section-head"><div><div class="eyebrow">${vvEsc(T(d.ui.lab_eyebrow))}</div><h2>${vvEsc(T(d.ui.lab_title))}</h2></div></div>
       <div class="cards-grid">
@@ -128,17 +127,6 @@ function vvNormalizeModel(d){
       </div></div></div></section>`
    };
    sections.forEach(s=>{if(templates[s.id]) target.insertAdjacentHTML('beforeend',templates[s.id]())});
-   document.querySelectorAll('.vv-project-card').forEach(card=>{
-     const toggle=card.querySelector('.vv-project-toggle');
-     const init=card.dataset.initialOpen==='1';
-     card.classList.toggle('is-open',init);
-     toggle.setAttribute('aria-expanded',String(init));
-     toggle.addEventListener('click',()=>{
-       const open=card.classList.toggle('is-open');
-       toggle.setAttribute('aria-expanded',String(open));
-     });
-   });
-
    if(!hasRendered){hasRendered=true;vvTypeText(document.body);}
  }
  document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{if(lang===b.dataset.lang)return;vvStopTyping();lang=b.dataset.lang;vvSetLang(lang);vvUpdateLanguageURL(lang);render()});

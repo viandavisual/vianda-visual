@@ -186,7 +186,6 @@ function vvSectionStyle(bg){
 async function vvPrepareBackgrounds(backgrounds={}){
   for(const bg of Object.values(backgrounds||{})){
     bg._imageSrc = bg.image || '';
-    bg._isVideo = Boolean(bg.mediaType==='video/webm' || bg.imageType==='video/webm' || /\.webm(?:[?#]|$)/i.test(bg._imageSrc));
     if(bg.imageAssetId){
       if(window.VV_PUBLIC_BUILD){
         // Public sites cannot access the editor's private IndexedDB.
@@ -194,14 +193,13 @@ async function vvPrepareBackgrounds(backgrounds={}){
         const media=window.VV_PUBLISHED_ASSETS||{};
         if(media[bg.imageAssetId]){
           bg._imageSrc=(window.VV_PUBLIC_PREFIX||'')+media[bg.imageAssetId];
-          bg._isVideo=/\.webm(?:[?#]|$)/i.test(bg._imageSrc);
         }else{
           console.error('Published background is missing from media manifest:',bg.imageAssetId);
         }
       }else{
         try{
           const blob=await vvAssetGet(bg.imageAssetId);
-          if(blob){bg._imageSrc=await vvBlobToDataURL(blob); bg._isVideo=blob.type==='video/webm';}
+          if(blob) bg._imageSrc=await vvBlobToDataURL(blob);
         }catch(e){ console.error('Background resolve error',e); }
       }
     }
@@ -219,7 +217,7 @@ function vvSectionBackground(bg){
   const scale=Number.isFinite(Number(bg.scale))?Number(bg.scale):100;
   const overlay=typeof bg.overlay==='number'?bg.overlay:0.62;
   return `<div class="section-bg" aria-hidden="true">
-    ${bg._isVideo || bg.mediaType==='video/webm' || /^data:video\/webm/i.test(src) ? `<video src="${vvEsc(src)}" autoplay muted loop playsinline preload="metadata" aria-hidden="true" style="object-position:${x}% ${y}%;transform:scale(${scale/100});transform-origin:${x}% ${y}%"></video>` : `<img src="${vvEsc(src)}" alt="" decoding="async" fetchpriority="high" style="object-position:${x}% ${y}%;transform:scale(${scale/100});transform-origin:${x}% ${y}%">`}
+    <img src="${vvEsc(src)}" alt="" decoding="async" fetchpriority="high" style="object-position:${x}% ${y}%;transform:scale(${scale/100});transform-origin:${x}% ${y}%">
     <span class="section-bg-overlay" style="opacity:${overlay}"></span>
   </div>`;
 }
@@ -282,11 +280,4 @@ function vvTypeText(root=document.body,opts={}){
     }),{threshold:.12,rootMargin:'0px 0px -4% 0px'});
     targets.forEach(el=>cycle.observer.observe(el));
   }else targets.forEach(animate);
-}
-
-// v1.5: Respect reduced-motion preferences for decorative WebM backgrounds.
-if(typeof window!=='undefined' && window.matchMedia){
- const vvReduce=window.matchMedia('(prefers-reduced-motion: reduce)');
- const vvPauseDecorative=()=>document.querySelectorAll('.section-bg video').forEach(v=>{if(vvReduce.matches)v.pause();else v.play().catch(()=>{});});
- document.addEventListener('DOMContentLoaded',()=>{const obs=new MutationObserver(vvPauseDecorative);obs.observe(document.body,{subtree:true,childList:true});vvReduce.addEventListener?.('change',vvPauseDecorative);});
 }
