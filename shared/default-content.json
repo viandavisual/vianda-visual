@@ -1054,6 +1054,14 @@
         "posX": 50,
         "posY": 50,
         "scale": 100
+      },
+      "heroMobile": {
+        "image": "",
+        "imageAssetId": "",
+        "overlay": 0.68,
+        "posX": 50,
+        "posY": 50,
+        "scale": 100
       }
     }
   }

@@ -80,3 +80,33 @@ section{position:relative;isolation:isolate;overflow:hidden}
 .vv-showreel-box .vv-youtube-poster{cursor:pointer;background-size:cover;background-position:center;position:relative;padding:0}
 .vv-youtube-play{display:grid;place-items:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:49px;background:#e62117;color:white;border-radius:14px;font-size:25px;line-height:1;box-shadow:0 5px 18px #0008}
 .vv-youtube-poster:hover .vv-youtube-play,.vv-youtube-poster:focus-visible .vv-youtube-play{background:#ff3329}
+
+
+/* v1.10 — CV responsive refinements. Desktop styling intentionally unchanged. */
+.cv-hero-desktop-bg,.cv-hero-mobile-bg{position:absolute;inset:0;pointer-events:none}
+.cv-hero-mobile-bg{display:none}
+@media(max-width:760px){
+  .cv-hero-mobile-bg{display:block}
+  .hero:has(.cv-hero-mobile-bg) .cv-hero-desktop-bg{display:none}
+  .cvnav{display:flex;flex-direction:column;align-items:stretch;gap:8px;padding:10px 0 12px}
+  .cvbrand{width:100%;justify-content:flex-start}
+  .cvbrand strong{font-size:15px;letter-spacing:.025em;white-space:nowrap}
+  .cvnavright{display:flex;flex-wrap:nowrap;align-items:stretch;justify-content:space-between;width:100%;gap:6px}
+  .cvnavright .langswitch{flex:1 1 auto;min-width:0;justify-content:space-evenly;padding:3px;gap:1px}
+  .cvnavright .langswitch button{padding:7px 5px;font-size:clamp(9px,2.5vw,12px);min-width:0}
+  .pdf-download{flex:0 0 auto;padding:8px 9px;font-size:10px;min-height:36px}
+  .portfolio-link{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;margin:0;padding:8px 10px;font-size:11px;white-space:nowrap}
+  .hero .role{font-size:clamp(10px,2.7vw,16px);letter-spacing:-.025em;line-height:1.25;white-space:nowrap}
+  .hero .contact-box{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:5px;width:100%;padding:11px 9px;font-size:clamp(8px,2.25vw,11px)}
+  .hero .contact-box>span{white-space:nowrap;overflow:visible;overflow-wrap:normal;min-width:0}
+  .hero .contact-box .phone-reveal{min-width:32px;min-height:32px;padding:5px;flex:0 0 auto}
+  #languages .grid,#links .grid{text-align:center}
+  #languages .grid>div,#links .grid>div{display:flex;flex-direction:column;align-items:center;width:100%}
+  #languages .simplelist{width:100%}
+  #languages .simplelist article{text-align:center}
+  #languages .cv-item{justify-content:center;grid-template-columns:minmax(0,1fr);justify-items:center;gap:9px}
+  #languages .cv-item-media{width:min(180px,70%)}
+  #languages .cv-item-copy{text-align:center}
+  #languages .cv-item-copy p{text-align:center}
+  #links .links{justify-content:center;align-items:center;width:100%}
+}
