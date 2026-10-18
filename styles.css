@@ -331,3 +331,9 @@ footer>.wrap{text-align:center}
 .vv-showreel-section{display:flex;justify-content:center;align-items:center;padding:clamp(22px,5vw,75px) 20px;min-height:auto!important;background:#080b0d}
 .vv-showreel-box{width:min(100%,1120px);margin:auto;overflow:hidden;border-radius:12px;background:#000;line-height:0}
 .vv-showreel-box video{width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;display:block;background:#000}
+
+/* v1.8 — Embedded YouTube showreels */
+.vv-showreel-box iframe,.vv-showreel-box .vv-youtube-poster{display:block;width:100%;aspect-ratio:16/9;height:auto;border:0;background-color:#000}
+.vv-showreel-box .vv-youtube-poster{cursor:pointer;background-size:cover;background-position:center;position:relative;padding:0}
+.vv-youtube-play{display:grid;place-items:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:49px;background:#e62117;color:white;border-radius:14px;font-size:25px;line-height:1;box-shadow:0 5px 18px #0008}
+.vv-youtube-poster:hover .vv-youtube-play,.vv-youtube-poster:focus-visible .vv-youtube-play{background:#ff3329}

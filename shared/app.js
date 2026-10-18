@@ -289,7 +289,21 @@ async function vvPrepareShowreels(entries=[]){
  for(const entry of entries){
   entry._videoSrc=await vvResolveAsset(entry.videoAssetId,entry.video||'');
   entry._posterSrc=await vvResolveAsset(entry.thumbnailAssetId,entry.thumbnail||'');
+  entry._youtubeId=vvYouTubeId(entry.youtubeUrl||'');
  }
+}
+function vvYouTubeId(raw){
+ try{
+  const u=new URL(String(raw||'').trim());
+  if(u.protocol!=='https:' && u.protocol!=='http:')return '';
+  const host=u.hostname.toLowerCase();let id='';
+  if(host==='youtu.be'||host==='www.youtu.be')id=u.pathname.split('/')[1]||'';
+  else if(['youtube.com','www.youtube.com','m.youtube.com','youtube-nocookie.com','www.youtube-nocookie.com'].includes(host)){
+   const segments=u.pathname.split('/').filter(Boolean);
+   id=segments[0]==='watch'?u.searchParams.get('v')||'':(['shorts','embed','live'].includes(segments[0])?segments[1]||'':'');
+  }
+  return /^[a-zA-Z0-9_-]{11}$/.test(id)?id:'';
+ }catch(e){return ''}
 }
 async function vvResolveAsset(id,fallback=''){
  if(!id)return fallback;
@@ -300,10 +314,26 @@ async function vvResolveAsset(id,fallback=''){
  try{const blob=await vvAssetGet(id);if(blob)return await vvBlobToDataURL(blob)}catch(err){console.error(err)}
  return fallback;
 }
+function vvStartYouTube(button){
+ const id=button.getAttribute('data-youtube-id');if(!/^[a-zA-Z0-9_-]{11}$/.test(id||''))return;
+ const iframe=document.createElement('iframe');
+ iframe.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0';
+ iframe.title='YouTube video player';iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+ iframe.setAttribute('allowfullscreen','');iframe.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+ button.replaceWith(iframe);
+}
 function vvShowreelHTML(entry){
+ const isYoutube=entry.sourceType==='youtube';
+ if(isYoutube){
+  const id=entry._youtubeId;if(!id)return '';
+  const content=entry._posterSrc
+   ?`<button type="button" class="vv-youtube-poster" data-youtube-id="${id}" onclick="vvStartYouTube(this)" aria-label="Play YouTube video" style="background-image:url('${vvEsc(entry._posterSrc).replace(/'/g,'&#39;')}')"><span aria-hidden="true" class="vv-youtube-play">▶</span></button>`
+   :`<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" title="YouTube video player" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+  return `<section class="vv-showreel-section" data-showreel="${vvEsc(entry.id)}"><div class="vv-showreel-box">${content}</div></section>`;
+ }
  if(!entry._videoSrc)return '';
  const poster=entry._posterSrc?` poster="${vvEsc(entry._posterSrc)}"`:'';
  const mime=/\.mp4(?:[?#]|$)/i.test(entry._videoSrc)||/^data:video\/mp4/i.test(entry._videoSrc)?'video/mp4':'video/webm';
  return `<section class="vv-showreel-section" data-showreel="${vvEsc(entry.id)}"><div class="vv-showreel-box"><video controls playsinline preload="metadata"${poster}><source src="${vvEsc(entry._videoSrc)}" type="${mime}"></video></div></section>`;
 }
-function vvShowreelsAfter(entries,after){return (entries||[]).filter(v=>v.after===after && v._videoSrc).map(vvShowreelHTML).join('')}
+function vvShowreelsAfter(entries,after){return (entries||[]).filter(v=>v.after===after && (v.sourceType==='youtube'?v._youtubeId:v._videoSrc)).map(vvShowreelHTML).join('')}
