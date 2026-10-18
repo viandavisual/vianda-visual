@@ -13,7 +13,15 @@
     const tx=v=>esc(text(v,lang));
     const L=labels[lang]||labels.eng;
     const paragraph=v=>text(v,lang)?`<p>${tx(v)}</p>`:'';
-    function list(group){return (c[group]||[]).map(x=>{
+    function list(group){
+      let entries=[...(c[group]||[])];
+      if(group==='languages'){
+        const target={eng:'english',cast:'spanish',cat:'catalan'}[lang]||'english';
+        const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+        const found=entries.findIndex(x=>Object.values(typeof x.name==='object'?x.name:{eng:x.name}).some(v=>norm(v)===target));
+        if(found>0)entries.unshift(...entries.splice(found,1));
+      }
+      return entries.map(x=>{
       const src=x._imageSrc||x.image||'';
       const img=src?`<img class="thumb" src="${esc(absolute(src))}" alt="">`:'';
       const url=x.url?`<a href="${esc(x.url)}" target="_blank">↗</a>`:'';
