@@ -337,3 +337,38 @@ footer>.wrap{text-align:center}
 .vv-showreel-box .vv-youtube-poster{cursor:pointer;background-size:cover;background-position:center;position:relative;padding:0}
 .vv-youtube-play{display:grid;place-items:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:49px;background:#e62117;color:white;border-radius:14px;font-size:25px;line-height:1;box-shadow:0 5px 18px #0008}
 .vv-youtube-poster:hover .vv-youtube-play,.vv-youtube-poster:focus-visible .vv-youtube-play{background:#ff3329}
+
+
+/* v1.9 — MOBILE ONLY: two compact collapsible project icons per row.
+   Override historic 1-column rules while leaving desktop and other grids untouched. */
+@media (max-width:760px){
+  #projects .projects-grid{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    column-gap:12px;
+    row-gap:12px;
+    align-items:start !important;
+  }
+  #projects .projects-grid > *,
+  #projects .projects-grid > :last-child:nth-child(odd){
+    grid-column:auto !important;
+    min-width:0;
+  }
+  #projects .vv-project-card{width:100%;max-width:100%;}
+  #projects .vv-project-card .card-body{padding:13px 11px;}
+  #projects .vv-project-card .card-body h3{font-size:clamp(15px,4vw,21px);overflow-wrap:anywhere;}
+  #projects .vv-project-card .card-body p{font-size:12px;}
+  #projects .vv-project-card .cta{padding:9px 7px;font-size:10px;min-height:38px;}
+  /* Contact CTAs: clear, evenly sized, two across, full combined width. */
+  #contact .links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%;}
+  #contact .links a.vv-contact-main{
+    display:flex;align-items:center;justify-content:center;
+    width:100%;min-width:0;min-height:48px;padding:12px 8px;
+    text-align:center;text-decoration:none;font-size:13px;font-weight:800;
+    border:1px solid var(--accent);border-radius:7px;
+    background:var(--accent);color:#111418;
+    letter-spacing:.05em;
+  }
+  #contact .links a:not(.vv-contact-main){grid-column:1 / -1;text-align:center;}
+  #contact .links a.vv-contact-main:focus-visible{outline:2px solid white;outline-offset:3px;}
+}
