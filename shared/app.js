@@ -283,3 +283,27 @@ function vvTypeText(root=document.body,opts={}){
     targets.forEach(el=>cycle.observer.observe(el));
   }else targets.forEach(animate);
 }
+
+// v1.7 · Independent optional showreels, with no changes to existing content schema.
+async function vvPrepareShowreels(entries=[]){
+ for(const entry of entries){
+  entry._videoSrc=await vvResolveAsset(entry.videoAssetId,entry.video||'');
+  entry._posterSrc=await vvResolveAsset(entry.thumbnailAssetId,entry.thumbnail||'');
+ }
+}
+async function vvResolveAsset(id,fallback=''){
+ if(!id)return fallback;
+ if(window.VV_PUBLIC_BUILD){
+  const path=(window.VV_PUBLISHED_ASSETS||{})[id];
+  return path?(window.VV_PUBLIC_PREFIX||'')+path:fallback;
+ }
+ try{const blob=await vvAssetGet(id);if(blob)return await vvBlobToDataURL(blob)}catch(err){console.error(err)}
+ return fallback;
+}
+function vvShowreelHTML(entry){
+ if(!entry._videoSrc)return '';
+ const poster=entry._posterSrc?` poster="${vvEsc(entry._posterSrc)}"`:'';
+ const mime=/\.mp4(?:[?#]|$)/i.test(entry._videoSrc)||/^data:video\/mp4/i.test(entry._videoSrc)?'video/mp4':'video/webm';
+ return `<section class="vv-showreel-section" data-showreel="${vvEsc(entry.id)}"><div class="vv-showreel-box"><video controls playsinline preload="metadata"${poster}><source src="${vvEsc(entry._videoSrc)}" type="${mime}"></video></div></section>`;
+}
+function vvShowreelsAfter(entries,after){return (entries||[]).filter(v=>v.after===after && v._videoSrc).map(vvShowreelHTML).join('')}
