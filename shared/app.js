@@ -186,6 +186,7 @@ function vvSectionStyle(bg){
 async function vvPrepareBackgrounds(backgrounds={}){
   for(const bg of Object.values(backgrounds||{})){
     bg._imageSrc = bg.image || '';
+    bg._isVideo = /\.webm(?:[?#]|$)/i.test(bg._imageSrc) || /^data:video\/webm/i.test(bg._imageSrc) || bg.mediaType==='video/webm';
     if(bg.imageAssetId){
       if(window.VV_PUBLIC_BUILD){
         // Public sites cannot access the editor's private IndexedDB.
@@ -193,13 +194,14 @@ async function vvPrepareBackgrounds(backgrounds={}){
         const media=window.VV_PUBLISHED_ASSETS||{};
         if(media[bg.imageAssetId]){
           bg._imageSrc=(window.VV_PUBLIC_PREFIX||'')+media[bg.imageAssetId];
+          bg._isVideo=/\.webm(?:[?#]|$)/i.test(bg._imageSrc);
         }else{
           console.error('Published background is missing from media manifest:',bg.imageAssetId);
         }
       }else{
         try{
           const blob=await vvAssetGet(bg.imageAssetId);
-          if(blob) bg._imageSrc=await vvBlobToDataURL(blob);
+          if(blob){bg._imageSrc=await vvBlobToDataURL(blob);bg._isVideo=blob.type==='video/webm';}
         }catch(e){ console.error('Background resolve error',e); }
       }
     }
@@ -217,7 +219,7 @@ function vvSectionBackground(bg){
   const scale=Number.isFinite(Number(bg.scale))?Number(bg.scale):100;
   const overlay=typeof bg.overlay==='number'?bg.overlay:0.62;
   return `<div class="section-bg" aria-hidden="true">
-    <img src="${vvEsc(src)}" alt="" decoding="async" fetchpriority="high" style="object-position:${x}% ${y}%;transform:scale(${scale/100});transform-origin:${x}% ${y}%">
+    ${bg._isVideo ? `<video src="${vvEsc(src)}" autoplay muted loop playsinline preload="metadata" aria-hidden="true" style="object-position:${x}% ${y}%;transform:scale(${scale/100});transform-origin:${x}% ${y}%"></video>` : `<img src="${vvEsc(src)}" alt="" decoding="async" fetchpriority="high" style="object-position:${x}% ${y}%;transform:scale(${scale/100});transform-origin:${x}% ${y}%">`}
     <span class="section-bg-overlay" style="opacity:${overlay}"></span>
   </div>`;
 }
