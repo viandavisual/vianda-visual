@@ -396,5 +396,4 @@ footer>.wrap{text-align:center}
 }
 .hero-logo,.brand{display:inline-block;animation:vvGlitchLoop 2s infinite steps(1,end);transform-origin:center}
 .kicker,.eyebrow,h2,h3,.tagline{animation:vvChromaLoop 2.5s infinite linear}
-#projects .vv-project-toggle .vv-media-frame,.pill,.links a,.vv-youtube-play{animation:vvSliceLoop 2.7s infinite linear;will-change:transform,clip-path}
 @media (prefers-reduced-motion:reduce){.hero-logo,.brand,.kicker,.eyebrow,h2,h3,.tagline,#projects .vv-project-toggle .vv-media-frame,.pill,.links a,.vv-youtube-play{animation:none!important}}
