@@ -5,7 +5,7 @@
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <title>CV · Josep Maria Solé · Vianda Visual</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="styles.css?v=1.10">
+<link rel="stylesheet" href="styles.css?v=1.11">
 <style>footer .wrap{text-align:center!important;justify-content:center!important;width:100%}</style></head>
 <body>
 <header><div class="wrap cvnav"><div class="cvbrand"><strong>VIANDA VISUAL</strong><span>CV</span></div>
@@ -92,7 +92,7 @@ function vvNormalizeModel(d){
       <div class="cv-kicker">VIANDA VISUAL · ${vvEsc(T(c.ui.cv_label))}</div>
       <h1>${vvEsc(c.profile.name)}</h1><div class="role">${vvEsc(T(c.profile.role))}</div>
       <p class="summary">${vvEsc(T(c.profile.summary))}</p>
-      <div class="contactline contact-box"><span>${vvEsc(c.profile.location)}</span><span>${vvEsc(c.profile.email)}</span><button type="button" id="revealPhone" class="phone-reveal" aria-label="Show phone number" title="Show phone number"><svg class="vv-phone-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 18.81a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.09 4.18 2 2 0 0 1 4.08 2h3a2 2 0 0 1 2 1.72c.12.96.34 1.91.65 2.81a2 2 0 0 1-.45 2.11L8.01 9.91a16 16 0 0 0 6.08 6.08l1.27-1.27a2 2 0 0 1 2.11-.45c.9.31 1.85.53 2.81.65A2 2 0 0 1 22 16.92Z"/></svg></button></div>
+      <div class="contactline contact-box"><span>${vvEsc(c.profile.location)}</span><a class="contact-email" href="mailto:${vvEsc(c.profile.email)}">${vvEsc(c.profile.email)}</a><button type="button" id="revealPhone" class="phone-reveal" aria-label="Show phone number" title="Show phone number"><svg class="vv-phone-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 18.81a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.09 4.18 2 2 0 0 1 4.08 2h3a2 2 0 0 1 2 1.72c.12.96.34 1.91.65 2.81a2 2 0 0 1-.45 2.11L8.01 9.91a16 16 0 0 0 6.08 6.08l1.27-1.27a2 2 0 0 1 2.11-.45c.9.31 1.85.53 2.81.65A2 2 0 0 1 22 16.92Z"/></svg></button></div>
    </div></section>`+
    section('experience',c.backgrounds?.experience,
      `<div class="eyebrow">${vvEsc(T(c.ui.experience_eyebrow))}</div><h2>${vvEsc(T(c.ui.experience_title))}</h2>`,
