@@ -372,3 +372,29 @@ footer>.wrap{text-align:center}
   #contact .links a:not(.vv-contact-main){grid-column:1 / -1;text-align:center;}
   #contact .links a.vv-contact-main:focus-visible{outline:2px solid white;outline-offset:3px;}
 }
+
+
+/* v1.13 — integrated animation set */
+@keyframes vvGlitchLoop{
+  0%,82%,100%{transform:translate3d(0,0,0);filter:none;opacity:1}
+  83%{transform:translate3d(1px,-1px,0) skewX(.4deg);filter:hue-rotate(8deg) saturate(1.08)}
+  84%{transform:translate3d(-2px,1px,0) skewX(-.7deg);filter:hue-rotate(-10deg) contrast(1.04)}
+  85%{transform:translate3d(2px,0,0) skewX(.8deg);filter:brightness(1.12)}
+  86%{transform:translate3d(-1px,0,0) skewX(-.35deg);filter:none}
+}
+@keyframes vvChromaLoop{
+  0%,100%{text-shadow:0 0 0 rgba(0,255,255,0),0 0 0 rgba(255,0,110,0)}
+  25%{text-shadow:.02em 0 0 rgba(0,240,255,.20),-.02em 0 0 rgba(255,0,110,.18)}
+  50%{text-shadow:-.03em 0 0 rgba(0,240,255,.26),.03em 0 0 rgba(255,0,110,.22)}
+  75%{text-shadow:.01em 0 0 rgba(0,240,255,.14),-.01em 0 0 rgba(255,0,110,.14)}
+}
+@keyframes vvSliceLoop{
+  0%,86%,100%{transform:translate3d(0,0,0);clip-path:inset(0 0 0 0)}
+  88%{transform:translate3d(1px,0,0);clip-path:inset(0 0 36% 0)}
+  90%{transform:translate3d(-1px,0,0);clip-path:inset(24% 0 0 0)}
+  92%{transform:translate3d(0,1px,0);clip-path:inset(0 0 0 0)}
+}
+.hero-logo,.brand{display:inline-block;animation:vvGlitchLoop 2s infinite steps(1,end);transform-origin:center}
+.kicker,.eyebrow,h2,h3,.tagline{animation:vvChromaLoop 2.5s infinite linear}
+#projects .vv-project-toggle .vv-media-frame,.pill,.links a,.vv-youtube-play{animation:vvSliceLoop 2.7s infinite linear;will-change:transform,clip-path}
+@media (prefers-reduced-motion:reduce){.hero-logo,.brand,.kicker,.eyebrow,h2,h3,.tagline,#projects .vv-project-toggle .vv-media-frame,.pill,.links a,.vv-youtube-play{animation:none!important}}
