@@ -23,9 +23,9 @@
       }
       return entries.map(x=>{
       const src=x._imageSrc||x.image||'';
-      const img=src?`<img class="thumb" src="${esc(absolute(src))}" alt="">`:'';
+      const img=group==='languages'?'':src?`<img class="thumb" src="${esc(absolute(src))}" alt="">`:'';
       const url=''; // v1.16: no diagonal link arrows in the PDF
-      return `<article class="entry">${img}<div class="entry-body"><div class="entry-top"><strong>${tx(x.title||x.name)}</strong><span class="period">${esc(x.period||'')}</span>${url}</div>${paragraph(x.body)}${paragraph(x.level)}</div></article>`;
+      return `<article class="entry${group==='languages'?' language-entry':''}">${img}<div class="entry-body"><div class="entry-top"><strong>${tx(x.title||x.name)}</strong><span class="period">${esc(x.period||'')}</span>${url}</div>${paragraph(x.body)}${paragraph(x.level)}</div></article>`;
     }).join('');}
     const skills=c.skills||{};
     const pills=xs=>(xs||[]).map(x=>`<span class="pill">${tx(x)}</span>`).join('');
@@ -36,6 +36,7 @@
     // The print window itself has desktop-sized dimensions, even on phones.
     const mobilePrint=window.matchMedia('(max-width:760px)').matches ||
       (window.matchMedia('(pointer:coarse)').matches && Math.min(screen.width,screen.height)<=760);
+    const printName=String(c.profile?.name||'').replace(/\s+/g,' ').trim();
     const doc=`<!doctype html><html lang="${lang==='eng'?'en':lang==='cast'?'es':'ca'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ViandaVisual_CV_${lang.toUpperCase()}</title>
 <style>
 @page{size:A4 ${mobilePrint?'portrait':'landscape'};margin:0}
@@ -48,24 +49,24 @@ body{display:flex;flex-direction:column;align-items:center;min-height:100vh}
 .page.portrait{width:210mm;height:297mm}
 .content{position:relative;width:281mm;margin:0 auto;padding-top:7mm;transform-origin:top left}
 .portrait .content{width:198mm;padding-top:6mm}
-.top{display:grid;grid-template-columns:2.1fr 1fr;gap:7mm;border-bottom:1px solid #475256;padding:0 0 4mm;margin-bottom:4mm}
-.portrait .top{grid-template-columns:1.3fr .95fr;gap:5mm}
+.top{display:grid;grid-template-columns:minmax(0,2.1fr) minmax(0,1fr);gap:5mm;border-bottom:1px solid #475256;padding:0 0 4mm;margin-bottom:4mm}
+.portrait .top{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:4mm}
 .kicker,.block h2{color:#d8ff34;font-weight:800;letter-spacing:1.1px;font-size:8px}
-h1{font-size:27px;line-height:1.07;letter-spacing:-.7px;margin:3mm 0 1mm;white-space:pre-line}.role{font-size:12px;font-weight:800;color:#fff}.summary{font-size:10px;line-height:1.42;color:#ebeeee;margin:3mm 0 0}
-.contacts{font-size:10px;line-height:1.65;align-self:stretch;display:flex;flex-direction:column;justify-content:center;border:1px solid #61696b;background:#111719;border-radius:5px;padding:3mm 4mm;overflow-wrap:anywhere;color:#f5f6f3}
-.contacts div{color:#f5f6f3;text-decoration:none}
+h1{font-size:clamp(16px,2.25vw,27px);line-height:1.07;letter-spacing:-.7px;margin:3mm 0 1mm;white-space:nowrap;word-break:normal;overflow:visible}.portrait h1{font-size:21px;letter-spacing:-.85px}.role{font-size:12px;font-weight:800;color:#fff}.summary{font-size:10px;line-height:1.42;color:#ebeeee;margin:3mm 0 0;text-align:justify;text-justify:inter-word;hyphens:auto}
+.top-aside{display:flex;min-width:0;align-self:stretch;gap:0;min-height:32mm}.contacts{flex:1;min-width:0;font-size:18px;line-height:1.34;align-self:stretch;display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;border:1px solid #61696b;background:#111719;border-radius:5px;padding:2mm;overflow-wrap:anywhere;color:#f5f6f3}.top-aside:has(.photo-top) .contacts{border-radius:5px 0 0 5px}.photo-top{flex:0 0 48%;min-width:0;height:auto;align-self:stretch;max-height:100%;overflow:hidden}.photo-top img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}.portrait .top-aside{min-height:36mm}.portrait .top-aside .contacts{font-size:15px}
+.contacts div,.contacts a,.contacts span{color:#f5f6f3!important;text-decoration:none!important;-webkit-text-fill-color:#f5f6f3!important}
 .cols{display:grid;grid-template-columns:1.18fr 1fr .80fr;gap:5mm;align-items:start}
 .col-experience{grid-column:1;grid-row:1 / span 2}
 .col-right{grid-column:2;grid-row:1}.col-skills{grid-column:3;grid-row:1}
-.photo-desktop{grid-column:2 / 4;grid-row:2;margin-top:1mm;max-height:68mm}
+.photo-desktop{display:none}
 .photo-mobile{display:none}
 .block{margin:0 0 3.6mm;break-inside:avoid}.block h2{margin:0 0 2mm;padding:0 0 1.5mm;border-bottom:1px solid #4d5455}
 .entry{display:flex;gap:2mm;margin-bottom:2.4mm;break-inside:avoid}.entry-body{flex:1;min-width:0}.entry-top{display:flex;gap:2mm;flex-wrap:wrap;align-items:baseline}
 .entry strong{font-size:10px;line-height:1.15}.period{font-size:9px;font-weight:800;color:#d8ff34;white-space:nowrap}.entry p{font-size:9px;line-height:1.32;color:#d7dddc;margin:1mm 0 0;text-align:left}
 .thumb{width:13mm;height:13mm;object-fit:cover;border:1px solid #465051;border-radius:2px;flex:none}
 .pills{display:flex;gap:1.3mm;flex-wrap:wrap}.pill{border:1px solid #485153;padding:1mm 1.7mm;border-radius:3mm;font-size:8.2px;line-height:1.2;color:#e4e8e9}
-.subtitle{color:#e8f4f4;font-size:8px;font-weight:800;margin:1.4mm 0}
-.pdf-photo{overflow:hidden;position:relative;background:#0d1012;min-height:20mm;line-height:0}.pdf-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.col-skills .pill{font-size:16.4px;padding:1.5mm 2.2mm;line-height:1.12}.subtitle{color:#e8f4f4;font-size:8px;font-weight:800;margin:1.4mm 0}
+.language-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1mm;align-items:start;min-height:16mm;padding-bottom:2mm}.language-list .language-entry{margin:0;min-width:0;display:block}.language-list .entry-body{min-width:0}.language-list .entry-top{display:block}.language-list .entry strong{font-size:9px;overflow-wrap:anywhere}.language-list .entry p{font-size:8.5px;white-space:normal}.portrait .language-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5mm;min-height:20mm}.pdf-photo{overflow:hidden;position:relative;background:#0d1012;min-height:20mm;line-height:0}.pdf-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 .photo-desktop{height:55mm}
 .bottom{position:absolute;bottom:3mm;left:8mm;right:8mm;color:#b1babb;font-size:7px;border-top:1px solid #30393a;padding-top:2mm;display:flex;justify-content:space-between}
 .portrait .cols{grid-template-columns:1.04fr .96fr;gap:4mm;align-items:start}
@@ -75,15 +76,15 @@ h1{font-size:27px;line-height:1.07;letter-spacing:-.7px;margin:3mm 0 1mm;white-s
 .portrait .photo-desktop{display:none}
 .portrait .photo-mobile{display:block;grid-column:1;grid-row:2;height:112mm;align-self:start;margin-top:2mm}
 .portrait .entry{margin-bottom:3.1mm}.portrait .entry strong{font-size:10.5px}.portrait .entry p{font-size:9.4px}.portrait .block h2{font-size:10px}
-.portrait .contacts{font-size:11.5px;padding:4mm 5mm;line-height:1.85}
+.portrait .contacts{font-size:17px;padding:2mm;line-height:1.40}
 .portrait .pill{font-size:16.4px;padding:1.5mm 2.2mm;border-radius:4mm;line-height:1.12}
 .portrait .pills{gap:1.8mm}.portrait .subtitle{margin:2.2mm 0}
 @media screen{.page{box-shadow:0 8px 28px #0009;margin:0 auto}}
 @media print{html,body{display:block;background:#0d1012;width:auto;min-height:0}.toolbar{display:none!important}.print-viewport{display:block;overflow:visible;width:auto}.page{transform:none!important;margin:0!important;box-shadow:none!important;break-after:avoid}.content{transform:scale(var(--fit,1))!important}}
 </style></head><body><div class="toolbar"><button class="hint" onclick="window.print()">GUARDAR COMO PDF / SAVE AS PDF</button></div><div class="print-viewport"><div class="page ${mobilePrint?'portrait':''}" id="sheet"><div class="content" id="content">
-<div class="top"><div><div class="kicker">VIANDA VISUAL · CURRICULUM VITAE</div><h1>${esc(c.profile?.name)}</h1><div class="role">${tx(c.profile?.role)}</div><div class="summary">${tx(c.profile?.summary)}</div></div><div class="contacts"><div>${esc(c.profile?.location)}</div><div>${esc(c.profile?.email)}</div><div>${esc(c.profile?.phone)}</div><div>viandavisual.com</div></div></div>
-<div class="cols"><div class="col-experience"><section class="block"><h2>${L.experience}</h2>${list('experience')}</section></div><div class="col-right"><section class="block"><h2>${L.projects}</h2>${list('projects')}</section><section class="block"><h2>${L.education}</h2>${list('education')}</section></div><div class="col-skills"><section class="block"><h2>${L.skills}</h2><div class="subtitle">${tx(c.ui?.development)}</div><div class="pills">${pills(skills.development)}</div><div class="subtitle">${tx(c.ui?.creative)}</div><div class="pills">${pills(skills.creative)}</div></section><section class="block"><h2>${L.languages}</h2>${list('languages')}</section></div>${photoHTML(desktopImage,'photo-desktop')}${photoHTML(mobileImage,'photo-mobile')}</div>
-</div><div class="bottom"><span>VIANDA VISUAL · ${esc(c.profile?.name)}</span><span>viandavisual.com</span></div></div></div>
+<div class="top"><div><div class="kicker">VIANDA VISUAL · CURRICULUM VITAE</div><h1>${esc(printName)}</h1><div class="role">${tx(c.profile?.role)}</div><div class="summary">${tx(c.profile?.summary)}</div></div><div class="top-aside"><div class="contacts"><div>${esc(c.profile?.location)}</div><div>${esc(c.profile?.email)}</div><div>${esc(c.profile?.phone)}</div><div>viandavisual.com</div></div>${mobilePrint?'':photoHTML(desktopImage,'photo-top')}</div></div>
+<div class="cols"><div class="col-experience"><section class="block"><h2>${L.experience}</h2>${list('experience')}</section></div><div class="col-right"><section class="block"><h2>${L.projects}</h2>${list('projects')}</section><section class="block"><h2>${L.education}</h2>${list('education')}</section></div><div class="col-skills"><section class="block"><h2>${L.skills}</h2><div class="subtitle">${tx(c.ui?.development)}</div><div class="pills">${pills(skills.development)}</div><div class="subtitle">${tx(c.ui?.creative)}</div><div class="pills">${pills(skills.creative)}</div></section><section class="block"><h2>${L.languages}</h2><div class="language-list">${list('languages')}</div></section></div>${photoHTML(mobileImage,'photo-mobile')}</div>
+</div><div class="bottom"><span>VIANDA VISUAL · ${esc(printName)}</span><span>viandavisual.com</span></div></div></div>
 <script>
 const page=document.getElementById('sheet'),content=document.getElementById('content');
 function fit(){content.style.transform='none';const avail=page.clientHeight-36;const h=content.scrollHeight;const width=content.scrollWidth;const scale=Math.min(1,avail/h,(page.clientWidth-12)/width);content.style.setProperty('--fit',scale.toFixed(4));}
