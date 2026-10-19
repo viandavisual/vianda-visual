@@ -31,7 +31,13 @@
     const pills=xs=>(xs||[]).map(x=>`<span class="pill">${tx(x)}</span>`).join('');
     const desktopImage=c.backgrounds?.pdfDesktop?._imageSrc||c.backgrounds?.pdfDesktop?.image||'';
     const mobileImage=c.backgrounds?.pdfMobile?._imageSrc||c.backgrounds?.pdfMobile?.image||'';
-    const photoHTML=(src,cls)=>src?`<div class="pdf-photo ${cls}"><img src="${esc(absolute(src))}" alt=""></div>`:'';
+    const photoHTML=(src,cls,bg={})=>{
+      if(!src)return '';
+      const x=Math.max(0,Math.min(100,Number(bg.posX??50)));
+      const y=Math.max(0,Math.min(100,Number(bg.posY??50)));
+      const zoom=Math.max(.5,Math.min(2.2,Number(bg.scale??100)/100));
+      return `<div class="pdf-photo ${cls}"><img src="${esc(absolute(src))}" alt="" style="object-position:${x}% ${y}%;transform:scale(${zoom});transform-origin:${x}% ${y}%"></div>`;
+    };
     // Detect the originating CV viewport BEFORE opening the separate print window.
     // The print window itself has desktop-sized dimensions, even on phones.
     const mobilePrint=window.matchMedia('(max-width:760px)').matches ||
@@ -71,7 +77,12 @@ body{display:flex;flex-direction:column;align-items:center;min-height:100vh}
 .portrait .cols{grid-template-columns:1.04fr .96fr;gap:4mm;align-items:start}
 .portrait .col-experience{grid-column:1;grid-row:1}
 .portrait .col-right{grid-column:2;grid-row:1}
-.portrait .col-skills{grid-column:2;grid-row:2}
+.portrait .col-skills{grid-column:auto;grid-row:auto}
+.portrait .col-skills.desktop-skills{display:none}
+.portrait .col-right .mobile-skills{display:block;margin-top:2mm}
+.mobile-skills{display:none}
+.portrait .cols{grid-template-rows:auto auto}
+
 .portrait .photo-desktop{display:none}
 .portrait .photo-mobile{display:block;grid-column:1;grid-row:2;height:112mm;align-self:start;margin-top:2mm}
 .portrait .entry{margin-bottom:3.1mm}.portrait .entry strong{font-size:10.5px}.portrait .entry p{font-size:9.4px}.portrait .block h2{font-size:12px}.portrait .contacts{font-size:17px;padding:2mm;line-height:1.40}.portrait .pill{font-size:16.4px;padding:1.5mm 2.2mm;border-radius:4mm;line-height:1.12}
@@ -79,8 +90,8 @@ body{display:flex;flex-direction:column;align-items:center;min-height:100vh}
 @media screen{.page{box-shadow:0 8px 28px #0009;margin:0 auto}}
 @media print{html,body{display:block;background:#0d1012;width:auto;min-height:0}.toolbar{display:none!important}.print-viewport{display:block;overflow:visible;width:auto}.page{transform:none!important;margin:0!important;box-shadow:none!important;break-after:avoid}.content{transform:scale(var(--fit,1))!important}}
 </style></head><body><div class="toolbar"><button class="hint" onclick="window.print()">GUARDAR COMO PDF / SAVE AS PDF</button></div><div class="print-viewport"><div class="page ${mobilePrint?'portrait':''}" id="sheet"><div class="content" id="content">
-<div class="top"><div><div class="kicker">VIANDA VISUAL · CURRICULUM VITAE</div><h1>${esc(printName)}</h1><div class="role">${tx(c.profile?.role)}</div><div class="summary">${tx(c.profile?.summary)}</div></div><div class="top-aside"><div class="contacts"><div>${esc(c.profile?.location)}</div><div>${esc(c.profile?.email)}</div><div>${esc(c.profile?.phone)}</div><div>viandavisual.com</div></div>${mobilePrint?'':photoHTML(desktopImage,'photo-top')}</div></div>
-<div class="cols"><div class="col-experience"><section class="block"><h2>${L.experience}</h2>${list('experience')}</section></div><div class="col-right"><section class="block"><h2>${L.projects}</h2>${list('projects')}</section><section class="block"><h2>${L.education}</h2>${list('education')}</section></div><div class="col-skills"><section class="block"><h2>${L.skills}</h2><div class="subtitle">${tx(c.ui?.development)}</div><div class="pills">${pills(skills.development)}</div><div class="subtitle">${tx(c.ui?.creative)}</div><div class="pills">${pills(skills.creative)}</div></section><section class="block"><h2>${L.languages}</h2><div class="language-list">${list('languages')}</div></section></div>${photoHTML(mobileImage,'photo-mobile')}</div>
+<div class="top"><div><div class="kicker">VIANDA VISUAL · CURRICULUM VITAE</div><h1>${esc(printName)}</h1><div class="role">${tx(c.profile?.role)}</div><div class="summary">${tx(c.profile?.summary)}</div></div><div class="top-aside"><div class="contacts"><div>${esc(c.profile?.location)}</div><div>${esc(c.profile?.email)}</div><div>${esc(c.profile?.phone)}</div><div>viandavisual.com</div></div>${mobilePrint?'':photoHTML(desktopImage,'photo-top',c.backgrounds?.pdfDesktop)}</div></div>
+<div class="cols"><div class="col-experience"><section class="block"><h2>${L.experience}</h2>${list('experience')}</section></div><div class="col-right"><section class="block"><h2>${L.projects}</h2>${list('projects')}</section><section class="block"><h2>${L.education}</h2>${list('education')}</section><div class="col-skills mobile-skills"><section class="block"><h2>${L.skills}</h2><div class="subtitle">${tx(c.ui?.development)}</div><div class="pills">${pills(skills.development)}</div><div class="subtitle">${tx(c.ui?.creative)}</div><div class="pills">${pills(skills.creative)}</div></section><section class="block"><h2>${L.languages}</h2><div class="language-list">${list('languages')}</div></section></div></div><div class="col-skills desktop-skills"><section class="block"><h2>${L.skills}</h2><div class="subtitle">${tx(c.ui?.development)}</div><div class="pills">${pills(skills.development)}</div><div class="subtitle">${tx(c.ui?.creative)}</div><div class="pills">${pills(skills.creative)}</div></section><section class="block"><h2>${L.languages}</h2><div class="language-list">${list('languages')}</div></section></div>${photoHTML(mobileImage,'photo-mobile',c.backgrounds?.pdfMobile)}</div>
 </div><div class="bottom"><span>VIANDA VISUAL · ${esc(printName)}</span><span>viandavisual.com</span></div></div></div>
 <script>
 const page=document.getElementById('sheet'),content=document.getElementById('content');
